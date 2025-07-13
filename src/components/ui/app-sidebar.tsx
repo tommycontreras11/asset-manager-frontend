@@ -26,6 +26,15 @@ import { TeamSwitcher } from "./team-switcher";
 const data: IAppSidebarProps = {
   mainNav: [
     {
+      name: "Home",
+      url: "/",
+      icon: BrainIcon,
+      isActive: true,
+      visibleProps: {
+        bothRoles: true,
+      },
+    },
+    {
       name: "Asset Types",
       url: "/asset-types",
       icon: BrainIcon,
