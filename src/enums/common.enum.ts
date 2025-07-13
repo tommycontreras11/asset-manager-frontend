@@ -9,6 +9,11 @@ export enum LedgerAccountTypeEnum {
   GENERAL = "GENERAL",
 }
 
+export enum PersonTypeEnum {
+  INDIVIDUAL = "INDIVIDUAL",
+  JURIDIC = "JURIDIC",
+}
+
 export enum UserRoleEnum {
   USER = "USER",
   EMPLOYEE = "EMPLOYEE"

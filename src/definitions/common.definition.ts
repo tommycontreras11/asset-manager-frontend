@@ -1,7 +1,7 @@
-import { LedgerAccountTypeEnum, StatusEnum } from "@/enums/common.enum";
+import { LedgerAccountTypeEnum, PersonTypeEnum, StatusEnum } from "@/enums/common.enum";
 import { IStatusTableDefinitions } from "@/interfaces/table.interface";
 import { ArchiveIcon, CheckCircledIcon, CrossCircledIcon, FileTextIcon } from "@radix-ui/react-icons";
-import { CreditCardIcon } from "lucide-react";
+import { BuildingIcon, CreditCardIcon, IdCardIcon } from "lucide-react";
 
 export const commonStatusTableDefinitions: IStatusTableDefinitions[] = [
   {
@@ -32,4 +32,17 @@ export const ledgerAccountStatusTableDefinitions: IStatusTableDefinitions[] = [
     label: "Purchase",
     icon: CreditCardIcon, 
   },
+];
+
+export const personTypeStatusTableDefinitions: IStatusTableDefinitions[] = [
+  {
+    value: PersonTypeEnum.INDIVIDUAL,
+    label: "Individual",
+    icon: IdCardIcon,
+  },
+  {
+    value: PersonTypeEnum.JURIDIC,
+    label: "Juridic",
+    icon: BuildingIcon,
+  }
 ];
