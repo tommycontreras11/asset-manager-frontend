@@ -15,9 +15,4 @@ export interface IUser extends IPerson {
 export interface ICreateUser
   extends Partial<Omit<IUser, "uuid" | "status">> { }
 
-export interface IUpdateUser {
-  identification?: string;
-  name?: string;
-  email?: string;
-  password?: string;
-}
+export interface IUpdateUser extends Partial<ICreateUser> {}

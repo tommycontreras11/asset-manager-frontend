@@ -17,7 +17,7 @@ export const columns = ({
   handleUpdate: (uuid: string) => void;
   handleDelete: (uuid: string) => void;
 }): ColumnDef<IUser>[] => [
-{
+  {
     accessorKey: "identification",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title={"Identification"} />
@@ -45,6 +45,9 @@ export const columns = ({
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title={"Password"} />
     ),
+    cell: ({ row }) => {
+      return <div className="font-medium">{`********`}</div>;
+    },
   },
   {
     accessorKey: "status",
