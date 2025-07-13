@@ -1,7 +1,8 @@
+import { config } from "@/lib/config";
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+   apiURL: config.apiURL,
 };
 
 export default nextConfig;
