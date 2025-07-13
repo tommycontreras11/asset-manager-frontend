@@ -9,9 +9,15 @@ import {
 } from "@/components/ui/sidebar";
 import { IAppSidebarProps } from "@/interfaces/sidebar.interface";
 import {
-  BrainIcon,
+  ArchiveIcon,
+  BackpackIcon,
+  BoxIcon,
   BriefcaseBusiness,
-  FolderKanban,
+  FileIcon,
+  FileTextIcon,
+  Home,
+  LayersIcon,
+  RowsIcon,
   Users
 } from "lucide-react";
 import * as React from "react";
@@ -28,7 +34,7 @@ const data: IAppSidebarProps = {
     {
       name: "Home",
       url: "/",
-      icon: BrainIcon,
+      icon: Home,
       isActive: true,
       visibleProps: {
         bothRoles: true,
@@ -37,7 +43,7 @@ const data: IAppSidebarProps = {
     {
       name: "Asset Types",
       url: "/asset-types",
-      icon: BrainIcon,
+      icon: BackpackIcon,
       isActive: true,
       visibleProps: {
         bothRoles: true,
@@ -46,7 +52,7 @@ const data: IAppSidebarProps = {
     {
       name: "Departments",
       url: "/departments",
-      icon: FolderKanban,
+      icon: LayersIcon,
       isActive: true,
       visibleProps: {
         bothRoles: true,
@@ -55,7 +61,7 @@ const data: IAppSidebarProps = {
     {
       name: "Depreciation Calculations",
       url: "/depreciation-calculations",
-      icon: FolderKanban,
+      icon: ArchiveIcon,
       isActive: true,
       visibleProps: {
         bothRoles: true,
@@ -73,7 +79,7 @@ const data: IAppSidebarProps = {
     {
       name: "Fixed Assets",
       url: "/fixed-assets",
-      icon: FolderKanban,
+      icon: BoxIcon,
       isActive: true,
       visibleProps: {
         bothRoles: true,
@@ -82,7 +88,7 @@ const data: IAppSidebarProps = {
     {
       name: "Inventory Types",
       url: "/inventory-types",
-      icon: FolderKanban,
+      icon: RowsIcon,
       isActive: true,
       visibleProps: {
         bothRoles: true,
@@ -91,7 +97,7 @@ const data: IAppSidebarProps = {
     {
       name: "Journal Entries",
       url: "/journal-entries",
-      icon: FolderKanban,
+      icon: FileTextIcon,
       isActive: true,
       visibleProps: {
         bothRoles: true,
@@ -100,7 +106,7 @@ const data: IAppSidebarProps = {
     {
       name: "Ledger Accounts",
       url: "/ledger-accounts",
-      icon: FolderKanban,
+      icon: FileIcon,
       isActive: true,
       visibleProps: {
         bothRoles: true,
