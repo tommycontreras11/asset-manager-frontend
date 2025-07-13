@@ -8,8 +8,6 @@ export interface IDepartment {
 }
 
 export interface ICreateDepartment
-  extends Partial<Omit<IDepartment, "uuid" | "status">> {
-  description?: string;
-}
+  extends Partial<Omit<IDepartment, "uuid" | "status">> { }
 
 export interface IUpdateDepartment extends Partial<ICreateDepartment> {}
