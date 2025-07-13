@@ -14,6 +14,11 @@ export enum PersonTypeEnum {
   JURIDIC = "JURIDIC",
 }
 
+export enum MovementTypeEnum {
+  DEBIT = "DEBIT",
+  CREDIT = "CREDIT",
+}
+
 export enum UserRoleEnum {
   USER = "USER",
   EMPLOYEE = "EMPLOYEE"

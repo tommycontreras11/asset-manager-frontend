@@ -5,9 +5,12 @@ import clsx from "clsx";
 
 import { DataTableColumnHeader } from "@/components/common/table/data-table-column-header";
 import { DataTableRowActions } from "@/components/common/table/data-table-row-actions";
-import { commonStatusTableDefinitions, ledgerAccountStatusTableDefinitions } from "@/definitions/common.definition";
-import { LedgerAccountTypeEnum, StatusEnum } from "@/enums/common.enum";
-import { ILedgerAccount } from "@/providers/http/ledger-accounts/interface";
+import {
+  commonStatusTableDefinitions,
+  movementTypeStatusTableDefinitions,
+} from "@/definitions/common.definition";
+import { MovementTypeEnum, StatusEnum } from "@/enums/common.enum";
+import { IJournalEntry } from "@/providers/http/journal-entries/interface";
 
 // Pass `handleUpdate` and `handleDelete` as props to columns
 export const columns = ({
@@ -16,30 +19,45 @@ export const columns = ({
 }: {
   handleUpdate: (uuid: string) => void;
   handleDelete: (uuid: string) => void;
-}): ColumnDef<ILedgerAccount>[] => [
+}): ColumnDef<IJournalEntry>[] => [
   {
-    accessorKey: "code",
+    accessorKey: "description",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title={"Code"} />
-    )
-  },
-  {
-    accessorKey: "name",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title={"Name"} />
+      <DataTableColumnHeader column={column} title={"Description"} />
     ),
     cell: ({ row }) => {
-      return <div className="font-medium">{row.getValue("name")}</div>;
+      return <div>{`${row.getValue("description").slice(0, 40)}...`}</div>;
     },
   },
   {
-    accessorKey: "type",
+    accessorKey: "amount",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title={"Ledger Account Type"} />
+      <DataTableColumnHeader column={column} title={"Amount"} />
     ),
     cell: ({ row }) => {
-      const status = ledgerAccountStatusTableDefinitions.find(
-        (type) => type.value === row.getValue("type")
+      return <div>{`${row.getValue("amount")} $`}</div>;
+    },
+  },
+  {
+    accessorKey: "inventoryType.name",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title={"Inventory Type"} />
+    ),
+  },
+  {
+    accessorKey: "ledgerAccount.name",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title={"Ledger Account"} />
+    ),
+  },
+  {
+    accessorKey: "movement_type",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title={"Movement Type"} />
+    ),
+    cell: ({ row }) => {
+      const status = movementTypeStatusTableDefinitions.find(
+        (movementType) => movementType.value === row.getValue("movement_type")
       );
       if (!status) {
         return null;
@@ -47,9 +65,8 @@ export const columns = ({
       return (
         <div
           className={clsx("flex w-[100px] items-center", {
-            "text-gray-500": status.value === LedgerAccountTypeEnum.GENERAL,
-            "text-yellow-500": status.value === LedgerAccountTypeEnum.DEPRECIATION,
-            "text-green-500": status.value === LedgerAccountTypeEnum.PURCHASE,
+            "text-red-500": status.value === MovementTypeEnum.CREDIT,
+            "text-green-500": status.value === MovementTypeEnum.DEBIT,
           })}
         >
           {status.icon && (
