@@ -3,6 +3,12 @@ export enum StatusEnum {
   INACTIVE = "INACTIVE",
 }
 
+export enum LedgerAccountTypeEnum {
+  PURCHASE = "PURCHASE",
+  DEPRECIATION = "DEPRECIATION",
+  GENERAL = "GENERAL",
+}
+
 export enum UserRoleEnum {
   USER = "USER",
   EMPLOYEE = "EMPLOYEE"

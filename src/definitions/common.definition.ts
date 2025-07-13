@@ -1,6 +1,7 @@
-import { StatusEnum } from "@/enums/common.enum";
+import { LedgerAccountTypeEnum, StatusEnum } from "@/enums/common.enum";
 import { IStatusTableDefinitions } from "@/interfaces/table.interface";
-import { CheckCircledIcon, CrossCircledIcon } from "@radix-ui/react-icons";
+import { ArchiveIcon, CheckCircledIcon, CrossCircledIcon, FileTextIcon } from "@radix-ui/react-icons";
+import { CreditCardIcon } from "lucide-react";
 
 export const commonStatusTableDefinitions: IStatusTableDefinitions[] = [
   {
@@ -12,5 +13,23 @@ export const commonStatusTableDefinitions: IStatusTableDefinitions[] = [
     value: StatusEnum.INACTIVE,
     label: "Inactive",
     icon: CrossCircledIcon,
+  },
+];
+
+export const ledgerAccountStatusTableDefinitions: IStatusTableDefinitions[] = [
+  {
+    value: LedgerAccountTypeEnum.GENERAL,
+    label: "General",
+    icon: FileTextIcon, 
+  },
+  {
+    value: LedgerAccountTypeEnum.DEPRECIATION,
+    label: "Depreciation",
+    icon: ArchiveIcon, 
+  },
+  {
+    value: LedgerAccountTypeEnum.PURCHASE,
+    label: "Purchase",
+    icon: CreditCardIcon, 
   },
 ];
