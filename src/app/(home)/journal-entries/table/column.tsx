@@ -26,7 +26,7 @@ export const columns = ({
       <DataTableColumnHeader column={column} title={"Description"} />
     ),
     cell: ({ row }) => {
-      return <div>{`${row.getValue("description").slice(0, 40)}...`}</div>;
+      return <div>{`${(row.getValue("description") as string).slice(0, 40)}...`}</div>;
     },
   },
   {
