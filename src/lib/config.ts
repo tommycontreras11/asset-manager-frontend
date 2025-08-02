@@ -1,3 +1,3 @@
 export const config = {
-    apiURL: process.env.SMART_HIRE_API_URL || "http://localhost:4000/api"
+    apiURL: process.env.ASSET_MANAGER_API_URL || "https://asset-manager-backend-x0g4.onrender.com/api"
 }
