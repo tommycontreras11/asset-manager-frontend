@@ -12,13 +12,17 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-interface DataTableRowActionsProps<TData> {
+interface WithUuid {
+  uuid: string;
+}
+
+interface DataTableRowActionsProps<TData extends WithUuid> {
   row: Row<TData>;
   onEdit: (uuid: string) => void;
   onDelete: (uuid: string) => void;
 }
 
-export function DataTableRowActions<TData>({ row, onEdit, onDelete }: DataTableRowActionsProps<TData>) {
+export function DataTableRowActions<TData extends WithUuid>({ row, onEdit, onDelete }: DataTableRowActionsProps<TData>) {
   const uuid = row.original?.uuid;
 
   if (!uuid) return null; 
