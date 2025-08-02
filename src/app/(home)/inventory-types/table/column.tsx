@@ -32,7 +32,8 @@ export const columns = ({
       <DataTableColumnHeader column={column} title={"Description"} />
     ),
     cell: ({ row }) => {
-      return <div>{`${row.getValue("description") ? `${row.getValue("description").slice(0, 40)}...` : ""}`}</div>;
+      const description = row.getValue("description") as string | undefined;
+      return <div>{description ? `${description.slice(0, 40)}...` : ""}</div>;
     },
   },
   {
