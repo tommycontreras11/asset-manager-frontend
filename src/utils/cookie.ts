@@ -1,13 +1,17 @@
 "use server";
 
+import { config } from "@/lib/config";
 import { cookies } from "next/headers";
 
+const isProd = config.nodeENV === "production";
+
 const configCookie = {
-  maxAge: 60 * 60 * 24,
+  maxAge: 60 * 60 * 24, // 1 day
   path: "/",
-  domain: "localhost",
   httpOnly: true,
-  secure: false,
+  secure: isProd,
+  sameSite: isProd ? "strict" as "strict" : "lax" as "lax",
+  domain: isProd ? "asset-manager-frontend-e9gg.onrender.com" : "localhost",
 };
 
 export const saveCookie = async (token: string) => {
