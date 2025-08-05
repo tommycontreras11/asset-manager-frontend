@@ -190,7 +190,7 @@ export default function FixedAsset() {
       />
 
       <CreateUpdateForm<ICreateFixedAsset | IUpdateFixedAsset>
-        title={`${isEditable ? "Update" : "Create"} Asset Type`}
+        title={`${isEditable ? "Update" : "Create"} Fixed Asset`}
         fields={fixedAssetFields}
         form={form}
         onSubmit={handleSubmit}
