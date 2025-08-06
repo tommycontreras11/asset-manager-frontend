@@ -39,6 +39,15 @@ export const columns = ({
     },
   },
   {
+    accessorKey: "entry_date",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title={"Entry Date"} />
+    ),
+    cell: ({ row }) => {
+      return <div>{new Date(row.getValue("entry_date")).toLocaleDateString()}</div>;
+    },
+  },
+  {
     accessorKey: "inventoryType.name",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title={"Inventory Type"} />

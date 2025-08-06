@@ -21,6 +21,7 @@ import {
 } from "@/mutations/api/journal-entries";
 import {
   ICreateJournalEntry,
+  IJournalEntry,
   IUpdateJournalEntry,
 } from "@/providers/http/journal-entries/interface";
 import {
@@ -32,6 +33,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { columns } from "./table/column";
+import { ICreateAccountingList } from "@/providers/http/accounting/interface";
+import { useCreateAccounting } from "@/mutations/api/accounting";
 
 export default function JournalEntry() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -85,6 +88,8 @@ export default function JournalEntry() {
     clearForm(form, true, setIsModalOpen, setIsEditable, setUUID);
   });
 
+  const { mutate: createAccounting } = useCreateAccounting(() => {})
+
   const { mutate: updateJournalEntry } = useUpdateJournalEntry(() => {
     clearForm(form, true, setIsModalOpen, setIsEditable, setUUID);
   });
@@ -106,6 +111,23 @@ export default function JournalEntry() {
   const modifyJournalEntry = (data: IUpdateJournalEntry) => {
     if (!uuid) return;
     updateJournalEntry({ uuid, data });
+  };
+
+  const sendToAccounting = (data: IJournalEntry[]) => {
+    let formattedData: ICreateAccountingList = { accounting: [] };
+
+    data.forEach((entry) => {
+      formattedData.accounting.push({
+        uuid: entry.uuid,
+        description: entry.description,
+        amount: entry.amount.toString(),
+        entry_date: entry.entry_date,
+        ledgerAccountUUID: entry.ledgerAccount.uuid,
+        movementType: entry.movement_type as MovementTypeEnum,
+      })
+    })
+
+    createAccounting(formattedData)
   };
 
   const handleSubmit = (data: ICreateJournalEntry | IUpdateJournalEntry) => {
@@ -209,50 +231,52 @@ export default function JournalEntry() {
         </button>
       </div>
 
-      {/* Second row: Date range + Filter button */}
-      <div className="flex flex-wrap items-end gap-4 mb-6">
-        {/* From Date */}
-        <div className="flex flex-col">
-          <label className="text-sm mb-1">From</label>
-          <input
-            type="date"
-            value={filterDate.from?.split("T")[0] ?? ""}
-            onChange={(e) =>
-              setFilterDate((prev) => ({
-                ...prev,
-                from: new Date(e.target.value).toISOString(),
-              }))
-            }
-            className="border border-gray-300 rounded px-3 py-1"
-          />
-        </div>
-        {/* To Date */}
-        <div className="flex flex-col">
-          <label className="text-sm mb-1">To</label>
-          <input
-            type="date"
-            value={filterDate.to?.split("T")[0] ?? ""}
-            onChange={(e) =>
-              setFilterDate((prev) => ({
-                ...prev,
-                to: new Date(e.target.value).toISOString(),
-              }))
-            }
-            className="border border-gray-300 rounded px-3 py-1"
-          />
-        </div>
-        {/* Filter Button */}
-        <div className="flex flex-col items-end mt-auto">
-          <button
-            onClick={() => {
-              console.log("Filter clicked", filterDate);
-            }}
-            className="px-4 py-2 bg-gray-700 text-white rounded hover:bg-gray-800"
-          >
-            Send to Accounting
-          </button>
-        </div>{" "}
-      </div>
+      {journalEntries && journalEntries.length > 0 && (
+        <>
+          {/* Second row: Date range + Filter button */}
+          <div className="flex flex-wrap items-end gap-4 mb-6">
+            {/* From Date */}
+            <div className="flex flex-col">
+              <label className="text-sm mb-1">From</label>
+              <input
+                type="date"
+                value={filterDate.from?.split("T")[0] ?? ""}
+                onChange={(e) =>
+                  setFilterDate((prev) => ({
+                    ...prev,
+                    from: new Date(e.target.value).toISOString(),
+                  }))
+                }
+                className="border border-gray-300 rounded px-3 py-1"
+              />
+            </div>
+            {/* To Date */}
+            <div className="flex flex-col">
+              <label className="text-sm mb-1">To</label>
+              <input
+                type="date"
+                value={filterDate.to?.split("T")[0] ?? ""}
+                onChange={(e) =>
+                  setFilterDate((prev) => ({
+                    ...prev,
+                    to: new Date(e.target.value).toISOString(),
+                  }))
+                }
+                className="border border-gray-300 rounded px-3 py-1"
+              />
+            </div>
+            {/* Filter Button */}
+            <div className="flex flex-col items-end mt-auto">
+              <button
+                onClick={() => sendToAccounting(journalEntries)}
+                className="px-4 py-2 bg-gray-700 text-white rounded hover:bg-gray-800"
+              >
+                Send to Accounting
+              </button>
+            </div>{" "}
+          </div>
+        </>
+      )}
 
       {/* Table and Modal */}
       <div className="w-full overflow-x-auto">
