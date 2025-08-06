@@ -1,11 +1,11 @@
 import journalEntriesProvider from "@/providers/http/journal-entries";
 import { useQuery } from "react-query";
 
-export function useGetAllJournalEntry() {
+export function useGetAllJournalEntry(from?: string, to?: string) {
   const query = useQuery({
-    queryKey: ["journal-entries"],
+    queryKey: ["journal-entries", from, to],
     retry: 1,
-    queryFn: () => journalEntriesProvider.getAll(),
+    queryFn: () => journalEntriesProvider.getAll(from, to),
   });
 
   return {

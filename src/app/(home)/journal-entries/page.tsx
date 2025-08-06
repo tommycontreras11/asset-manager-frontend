@@ -5,11 +5,15 @@ import {
   IFormField,
 } from "@/components/common/modal/create-update";
 import DataTable from "@/components/common/table/data-table";
+import { DatePicker } from "@/components/ui/date-picker";
 import { commonStatusTableDefinitions } from "@/definitions/common.definition";
+import { LedgerAccountTypeEnum, MovementTypeEnum } from "@/enums/common.enum";
+import { useGetAllInventoryType } from "@/hooks/api/inventory-type.hook";
 import {
   useGetAllJournalEntry,
   useGetOneJournalEntry,
 } from "@/hooks/api/journal-entry.hook";
+import { useGetAllLedgerAccount } from "@/hooks/api/ledger-account.hook";
 import {
   useCreateJournalEntry,
   useDeleteJournalEntry,
@@ -28,14 +32,15 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { columns } from "./table/column";
-import { useGetAllLedgerAccount } from "@/hooks/api/ledger-account.hook";
-import { useGetAllInventoryType } from "@/hooks/api/inventory-type.hook";
-import { MovementTypeEnum } from "@/enums/common.enum";
 
 export default function JournalEntry() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditable, setIsEditable] = useState(false);
   const [uuid, setUUID] = useState<string | null>("");
+  const [filterDate, setFilterDate] = useState({
+    from: "",
+    to: "",
+  });
   const [assetTypeFields, setJournalEntryFields] = useState<IFormField[]>([
     { name: "description", label: "Description", type: "text" },
     { name: "entry_date", label: "Entry Date", type: "date" },
@@ -65,7 +70,10 @@ export default function JournalEntry() {
     },
   });
 
-  const { data: journalEntries } = useGetAllJournalEntry();
+  const { data: journalEntries } = useGetAllJournalEntry(
+    filterDate.from,
+    filterDate.to
+  );
   const { data: journalEntry } = useGetOneJournalEntry(uuid || "");
 
   const { data: inventoryTypes, isLoading: isLoadingInventoryTypes } =
@@ -143,10 +151,15 @@ export default function JournalEntry() {
             name: "ledgerAccountUUID",
             label: "Ledger Account",
             type: "select",
-            options: ledgerAccounts.map((ledgerAccount) => ({
-              label: ledgerAccount.name,
-              value: ledgerAccount.uuid,
-            })),
+            options: ledgerAccounts
+              .filter(
+                (ledgerAccount) =>
+                  ledgerAccount.type === LedgerAccountTypeEnum.GENERAL
+              )
+              .map((ledgerAccount) => ({
+                label: ledgerAccount.name,
+                value: ledgerAccount.uuid,
+              })),
           },
         ];
       }
@@ -185,27 +198,79 @@ export default function JournalEntry() {
   }, [journalEntry, isEditable, isModalOpen]);
 
   return (
-    <div className="mx-auto w-full overflow-x-auto">
-      <button
-        className="bg-sky-700 hover:bg-sky-800 text-white font-bold py-2 px-4 rounded mb-4"
-        onClick={() => setIsModalOpen(true)}
-      >
-        Create
-      </button>
-      <DataTable
-        data={journalEntries || []}
-        columns={columns({ handleUpdate, handleDelete })}
-        definitions={commonStatusTableDefinitions}
-      />
+    <div className="w-full">
+      {/* Top section: Create button */}
+      <div className="mb-4">
+        <button
+          onClick={() => setIsModalOpen(true)}
+          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+        >
+          Create
+        </button>
+      </div>
 
-      <CreateUpdateForm<ICreateJournalEntry | IUpdateJournalEntry>
-        title={`${isEditable ? "Update" : "Create"} Journal Entry`}
-        fields={assetTypeFields}
-        form={form}
-        onSubmit={handleSubmit}
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-      />
+      {/* Second row: Date range + Filter button */}
+      <div className="flex flex-wrap items-end gap-4 mb-6">
+        {/* From Date */}
+        <div className="flex flex-col">
+          <label className="text-sm mb-1">From</label>
+          <input
+            type="date"
+            value={filterDate.from?.split("T")[0] ?? ""}
+            onChange={(e) =>
+              setFilterDate((prev) => ({
+                ...prev,
+                from: new Date(e.target.value).toISOString(),
+              }))
+            }
+            className="border border-gray-300 rounded px-3 py-1"
+          />
+        </div>
+        {/* To Date */}
+        <div className="flex flex-col">
+          <label className="text-sm mb-1">To</label>
+          <input
+            type="date"
+            value={filterDate.to?.split("T")[0] ?? ""}
+            onChange={(e) =>
+              setFilterDate((prev) => ({
+                ...prev,
+                to: new Date(e.target.value).toISOString(),
+              }))
+            }
+            className="border border-gray-300 rounded px-3 py-1"
+          />
+        </div>
+        {/* Filter Button */}
+        <div className="flex flex-col items-end mt-auto">
+          <button
+            onClick={() => {
+              console.log("Filter clicked", filterDate);
+            }}
+            className="px-4 py-2 bg-gray-700 text-white rounded hover:bg-gray-800"
+          >
+            Send to Accounting
+          </button>
+        </div>{" "}
+      </div>
+
+      {/* Table and Modal */}
+      <div className="w-full overflow-x-auto">
+        <DataTable
+          data={journalEntries || []}
+          columns={columns({ handleUpdate, handleDelete })}
+          definitions={commonStatusTableDefinitions}
+        />
+
+        <CreateUpdateForm<ICreateJournalEntry | IUpdateJournalEntry>
+          title={`${isEditable ? "Update" : "Create"} Journal Entry`}
+          fields={assetTypeFields}
+          form={form}
+          onSubmit={handleSubmit}
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+        />
+      </div>
     </div>
   );
 }

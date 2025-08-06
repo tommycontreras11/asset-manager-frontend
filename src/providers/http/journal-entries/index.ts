@@ -7,8 +7,8 @@ export class JournalEntriesProvider extends Base {
         super(`${config.apiURL}/journal-entries`);
     }
 
-    public getAll(): Promise<IResponse<IJournalEntry[]>> {
-        return this.get("/");
+    public getAll(from?: string, to?: string): Promise<IResponse<IJournalEntry[]>> {
+        return this.get(`/?from=${from}&to=${to}`);
     }
 
     public getOne(uuid: string): Promise<IResponse<IJournalEntry>> {
