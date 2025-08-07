@@ -88,7 +88,7 @@ export default function JournalEntry() {
     clearForm(form, true, setIsModalOpen, setIsEditable, setUUID);
   });
 
-  const { mutate: createAccounting } = useCreateAccounting(() => {})
+  const { mutate: createAccounting } = useCreateAccounting(() => {});
 
   const { mutate: updateJournalEntry } = useUpdateJournalEntry(() => {
     clearForm(form, true, setIsModalOpen, setIsEditable, setUUID);
@@ -124,10 +124,10 @@ export default function JournalEntry() {
         entry_date: entry.entry_date,
         ledgerAccountUUID: entry.ledgerAccount.uuid,
         movementType: entry.movement_type as MovementTypeEnum,
-      })
-    })
+      });
+    });
 
-    createAccounting(formattedData)
+    createAccounting(formattedData);
   };
 
   const handleSubmit = (data: ICreateJournalEntry | IUpdateJournalEntry) => {
@@ -231,10 +231,10 @@ export default function JournalEntry() {
         </button>
       </div>
 
-      {journalEntries && journalEntries.length > 0 && (
-        <>
-          {/* Second row: Date range + Filter button */}
-          <div className="flex flex-wrap items-end gap-4 mb-6">
+      <div className="flex flex-wrap items-end gap-4 mb-6">
+        {journalEntries && journalEntries.length > 0 ? (
+          <>
+            {/* Second row: Date range + Filter button */}
             {/* From Date */}
             <div className="flex flex-col">
               <label className="text-sm mb-1">From</label>
@@ -274,10 +274,21 @@ export default function JournalEntry() {
                 Send to Accounting
               </button>
             </div>{" "}
-          </div>
-        </>
-      )}
-
+          </>
+        ) : (
+          <>
+            {/* Remove Filter Button */}
+            <div className="flex flex-col items-start mt-auto">
+              <button
+                onClick={() => setFilterDate({ from: "", to: "" })}
+                className="px-4 py-2 bg-gray-700 text-white rounded hover:bg-gray-800"
+              >
+                Remove Filter
+              </button>
+            </div>
+          </>
+        )}
+      </div>
       {/* Table and Modal */}
       <div className="w-full overflow-x-auto">
         <DataTable
