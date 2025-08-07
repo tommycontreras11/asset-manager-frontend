@@ -5,6 +5,7 @@ import { IDepartment } from "../departments/interface";
 export interface IJournalEntry {
   uuid: string;
   description: string;
+  journal_id?: string;
   entry_date: Date
   amount: string;
   inventoryType: IDepartment;
@@ -18,6 +19,8 @@ export interface ICreateJournalEntry
     Omit<
       IJournalEntry,
       | "uuid"
+      | "description"
+      | "journal_id"
       | "inventoryType"
       | "ledgerAccount"
       | "movementType"

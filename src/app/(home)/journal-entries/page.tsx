@@ -34,6 +34,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { columns } from "./table/column";
+import { toast } from "sonner";
 
 export default function JournalEntry() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -44,7 +45,6 @@ export default function JournalEntry() {
     to: "",
   });
   const [assetTypeFields, setJournalEntryFields] = useState<IFormField[]>([
-    { name: "description", label: "Description", type: "text" },
     { name: "entry_date", label: "Entry Date", type: "date" },
     { name: "amount", label: "Amount", type: "number" },
     {
@@ -63,7 +63,6 @@ export default function JournalEntry() {
       isEditable ? updateJournalEntryFormSchema : createJournalEntryFormSchema
     ),
     defaultValues: {
-      description: "",
       entry_date: undefined,
       amount: "",
       inventoryTypeUUID: "",
@@ -198,7 +197,6 @@ export default function JournalEntry() {
 
     if (isEditable && isModalOpen) {
       fillFormInput(form, [
-        { property: "description", value: journalEntry.description },
         { property: "entry_date", value: new Date(journalEntry.entry_date) },
         { property: "amount", value: journalEntry.amount.toString() },
         {
@@ -267,7 +265,13 @@ export default function JournalEntry() {
             {/* Filter Button */}
             <div className="flex flex-col items-end mt-auto">
               <button
-                onClick={() => sendToAccounting(journalEntries)}
+                onClick={() => {
+                  if(journalEntries.some((entry) => entry.journal_id !== null)) {
+                    toast.error("Some journal entries have already been sent to accounting")
+                    return;
+                  }
+                  sendToAccounting(journalEntries)
+                }}
                 className="px-4 py-2 bg-gray-700 text-white rounded hover:bg-gray-800"
               >
                 Send to Accounting

@@ -3,7 +3,6 @@ import { z } from "zod";
 import { salaryRegex } from "./fixed-asset.schema";
 
 export const createJournalEntryFormSchema = z.object({
-  description: z.string(),
   entry_date: z.date().refine((value) => value, "Entry date is required"),
   amount: z
     .string()
