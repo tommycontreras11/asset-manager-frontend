@@ -36,8 +36,6 @@ export default function DepreciationCalculation() {
   const [uuid, setUUID] = useState<string | null>("");
   const [assetTypeFields, setDepreciationCalculationFields] = useState<IFormField[]>([
     { name: "process_date", label: "Process Date", type: "date" },
-    { name: "depreciation_amount", label: "Depreciation Amount", type: "number" },
-    { name: "accumulated_depreciation", label: "Accumulated Depreciation", type: "number" },
   ]);
 
   const form = useForm<Partial<ICreateDepreciationCalculation & IUpdateDepreciationCalculation>>({
@@ -46,8 +44,6 @@ export default function DepreciationCalculation() {
     ),
     defaultValues: {
       process_date: undefined,
-      depreciation_amount: "",
-      accumulated_depreciation: "",
       fixedAssetUUID: "",
     },
   });
@@ -128,8 +124,6 @@ export default function DepreciationCalculation() {
     if (isEditable && isModalOpen) {
       fillFormInput(form, [
         { property: "process_date", value: new Date(depreciationCalculation.process_date) },
-        { property: "depreciation_amount", value: depreciationCalculation.depreciation_amount.toString() },
-        { property: "accumulated_depreciation", value: depreciationCalculation.accumulated_depreciation.toString() },
         { property: "fixedAssetUUID", value: depreciationCalculation.fixedAsset.uuid },
       ]);
     }

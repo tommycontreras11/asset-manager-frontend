@@ -15,6 +15,8 @@ export interface ICreateDepreciationCalculation
     Omit<
       IDepreciationCalculation,
       | "uuid"
+      | "depreciation_amount"
+      | "accumulated_depreciation"
       | "fixedAsset"
       | "status"
     >
