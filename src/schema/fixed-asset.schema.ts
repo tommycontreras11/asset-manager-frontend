@@ -15,6 +15,23 @@ export const createFixedAssetFormSchema = z.object({
     .refine((val) => parseFloat(val) > 0, {
       message: "Purchase value must be greater than 0",
     }),
+  salvage_value: z
+    .string()
+    .regex(salaryRegex, {
+      message:
+        "Salvage value must have at most 10 digits in total and 2 decimal places (optional)",
+    })
+    .refine((val) => parseFloat(val) > 0, {
+      message: "Salvage value must be greater than 0",
+    }),
+  useful_life: z
+    .string()
+    .regex(/^\d+$/, {
+      message: "Useful life must be a positive integer",
+    })
+    .refine((val) => parseInt(val) > 0, {
+      message: "Useful life must be greater than 0",
+    }),
   accumulated_depreciation: z
     .string()
     .regex(salaryRegex, {
@@ -24,6 +41,10 @@ export const createFixedAssetFormSchema = z.object({
     .refine((val) => parseFloat(val) > 0, {
       message: "Accumulated depreciation must be greater than 0",
     }),
+  purchase_date: z.date().refine((value) => value, "Purchase date is required"),
+  start_use_date: z
+    .date()
+    .refine((value) => value, "Start use date is required"),
   departmentUUID: z.string().uuid("Department must be a valid UUID"),
   assetTypeUUID: z.string().uuid("Asset type must be a valid UUID"),
   employeeUUID: z.string().uuid("Employee must be a valid UUID"),

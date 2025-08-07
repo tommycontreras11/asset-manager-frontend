@@ -7,7 +7,11 @@ export interface IFixedAsset {
   uuid: string;
   name: string;
   purchase_value: string;
+  salvage_value: string
+  useful_life: string
   accumulated_depreciation: string;
+  purchase_date: Date
+  start_use_date: Date;
   department: IDepartment;
   assetType: IAssetType;
   employee: IEmployee;

@@ -39,7 +39,11 @@ export default function FixedAsset() {
   const [fixedAssetFields, setFixedAssetFields] = useState<IFormField[]>([
     { name: "name", label: "Name", type: "text" },
     { name: "purchase_value", label: "Purchase Value", type: "number" },
+    { name: "salvage_value", label: "Salvage Value", type: "number" },
+    { name: "useful_life", label: "Useful Life", type: "number" },
     { name: "accumulated_depreciation", label: "Accumulated Depreciation", type: "number" },
+    { name: "purchase_date", label: "Purchase Date", type: "date" },
+    { name: "start_use_date", label: "Start Use Date", type: "date" },
   ]);
 
   const form = useForm<Partial<ICreateFixedAsset | IUpdateFixedAsset>>({
@@ -49,7 +53,11 @@ export default function FixedAsset() {
     defaultValues: {
       name: "",
       purchase_value: "",
+      salvage_value: "",
+      useful_life: "",
       accumulated_depreciation: "",
+      purchase_date: undefined,
+      start_use_date: undefined,
       departmentUUID: "",
       assetTypeUUID: "",
       employeeUUID: "",
@@ -163,7 +171,11 @@ export default function FixedAsset() {
       fillFormInput(form, [
         { property: "name", value: fixedAsset.name },
         { property: "purchase_value", value: fixedAsset.purchase_value },
+        { property: "salvage_value", value: fixedAsset.salvage_value },
+        { property: "useful_life", value: fixedAsset.useful_life },
         { property: "accumulated_depreciation", value: fixedAsset.accumulated_depreciation },
+        { property: "purchase_date", value: fixedAsset.purchase_date },
+        { property: "start_use_date", value: fixedAsset.start_use_date },
         { property: "departmentUUID", value: fixedAsset.department.uuid },
         { property: "assetTypeUUID", value: fixedAsset.assetType.uuid },
         { property: "employeeUUID", value: fixedAsset.employee.uuid },

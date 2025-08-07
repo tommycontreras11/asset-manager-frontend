@@ -5,9 +5,7 @@ import clsx from "clsx";
 
 import { DataTableColumnHeader } from "@/components/common/table/data-table-column-header";
 import { DataTableRowActions } from "@/components/common/table/data-table-row-actions";
-import {
-  commonStatusTableDefinitions
-} from "@/definitions/common.definition";
+import { commonStatusTableDefinitions } from "@/definitions/common.definition";
 import { StatusEnum } from "@/enums/common.enum";
 import { IFixedAsset } from "@/providers/http/fixed-assets/interface";
 
@@ -38,13 +36,43 @@ export const columns = ({
     },
   },
   {
+    accessorKey: "salvage_value",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title={"Salvage Value"} />
+    ),
+    cell: ({ row }) => {
+      return <div>{`${row.getValue("salvage_value")} $`}</div>;
+    },
+  },
+  {
+    accessorKey: "useful_life",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title={"Useful Life"} />
+    ),
+  },
+  {
     accessorKey: "accumulated_depreciation",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title={"Accumulated Depreciation"} />
+      <DataTableColumnHeader
+        column={column}
+        title={"Accumulated Depreciation"}
+      />
     ),
     cell: ({ row }) => {
       return <div>{`${row.getValue("accumulated_depreciation")} $`}</div>;
     },
+  },
+  {
+    accessorKey: "purchase_date",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title={"Purchase Date"} />
+    ),
+  },
+  {
+    accessorKey: "start_use_date",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title={"Start Use Date"} />
+    ),
   },
   {
     accessorKey: "department.name",
