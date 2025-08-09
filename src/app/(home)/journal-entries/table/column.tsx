@@ -48,6 +48,12 @@ export const columns = ({
     },
   },
   {
+    accessorKey: "journal_id",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title={"Journal Id"} />
+    ),
+  },
+  {
     accessorKey: "inventoryType.name",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title={"Inventory Type"} />
